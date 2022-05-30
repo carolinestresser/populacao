@@ -1,47 +1,36 @@
---Query the list of CITY names from STATION that either do not start with vowels or do not end with vowels. Your result cannot contain duplicates.
+-- Query the average population for all cities in CITY, rounded down to the nearest integer.
 
-select distinct city from station 
-where left(city,1) not in ('a','e','i','o','u') 
-or right(city, 1) not in ('a','e','i','o','u')
+SELECT AVG (POPULATION)
+FROM city
 
---Query the list of CITY names from STATION which have vowels (i.e., a, e, i, o, and u) as both their first and last characters. Your result cannot contain duplicates.
+--Query the difference between the maximum and minimum populations in CITY.
+SELECT MAX(Population) - MIN(Population)
+FROM city
 
-select distinct city from station 
-where left(city,1) in ('a','e','i','o','u') 
-and right(city, 1) in ('a','e','i','o','u')
+--Given the CITY and COUNTRY tables, query the sum of the populations of all cities where the CONTINENT is 'Asia'.
+SELECT SUM(city.population)
+FROM city
+INNER JOIN country
+ON CITY.CountryCode = COUNTRY.Code
+WHERE COUNTRY.CONTINENT = 'Asia'
 
---Query the list of CITY names ending with vowels (a, e, i, o, u) from STATION. Your result cannot contain duplicates.
+--Given the CITY and COUNTRY tables, query the names of all cities where the CONTINENT is 'Africa'.
+SELECT city.name
+FROM city
+INNER JOIN country
+ON CITY.CountryCode = COUNTRY.Code
+WHERE COUNTRY.CONTINENT = 'Africa'
 
-SELECT DISTINCT city
-from station 
-where city like '%a'
-OR city like '%E'
-OR city like '%I'
-OR city like '%O'
-OR city like '%U'
-
--- Query the list of CITY names starting with vowels (i.e., a, e, i, o, or u) from STATION. Your result cannot contain duplicates.
-
-SELECT DISTINCT city
-from station 
-where city like 'a%'
-OR city like 'E%'
-OR city like 'I%'
-OR city like 'O%'
-OR city like 'U%'
-
---1.	Query the two cities in STATION with the shortest and longest CITY names, as well as their respective lengths (i.e.: number of characters in the name). If there is more than one smallest or largest city, choose the one that comes first when ordered alphabetically.
-
-SELECT TOP 1 
-CITY, 
-LEN (city)
-FROM STATION 
-WHERE CITY LIKE'A%'
-ORDER BY LEN (city) ASC
+-- Given the CITY and COUNTRY tables, query the names of all the continents (COUNTRY.Continent) and their respective average city populations (CITY.Population) rounded down to the nearest integer.
+SELECT COUNTRY.Continent, AVG(CITY.Population)
+FROM city
+INNER JOIN country
+ON CITY.CountryCode = COUNTRY.Code
+GROUP BY COUNTRY.Continent
 
 
-SELECT TOP 1 CITY,
-LEN (city)
-FROM STATION 
-WHERE CITY LIKE 'M%'
-ORDER BY LEN (city) DESC
+-- Query the sum of the populations for all Japanese cities in CITY. The COUNTRYCODE for Japan is JPN.
+
+SELECT SUM(POPULATION)
+FROM city
+WHERE COUNTRYCODE = 'JPN'
